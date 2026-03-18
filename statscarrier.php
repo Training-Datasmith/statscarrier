@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * Copyright since 2007 PrestaShop SA and Contributors
  * PrestaShop is an International Registered Trademark & Property of PrestaShop SA
@@ -94,7 +96,7 @@ class statscarrier extends ModuleGraph
 					<div class="col-lg-8">
 						'.($result['total'] ? $this->engine([
                     'type' => 'pie',
-                    'option' => Tools::getValue('id_order_state')
+                    'option' => Tools::getValue('id_order_state'),
                 ]).'
 					</div>
 					<div class="col-lg-4">
