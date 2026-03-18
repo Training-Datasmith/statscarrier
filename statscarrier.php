@@ -43,9 +43,9 @@ class statscarrier extends ModuleGraph
 
         parent::__construct();
 
-        $this->displayName = $this->trans('Carrier distribution', array(), 'Modules.Statscarrier.Admin');
-        $this->description = $this->trans('Enrich your stats, add a pie chart illustrating your carriers’ distribution.', array(), 'Modules.Statscarrier.Admin');
-        $this->ps_versions_compliancy = array('min' => '1.7.1.0', 'max' => _PS_VERSION_);
+        $this->displayName = $this->trans('Carrier distribution', [], 'Modules.Statscarrier.Admin');
+        $this->description = $this->trans('Enrich your stats, add a pie chart illustrating your carriers’ distribution.', [], 'Modules.Statscarrier.Admin');
+        $this->ps_versions_compliancy = ['min' => '1.7.1.0', 'max' => _PS_VERSION_];
     }
 
     public function install()
@@ -64,7 +64,7 @@ class statscarrier extends ModuleGraph
         $states = OrderState::getOrderStates($this->context->language->id);
 
         if (Tools::getValue('export')) {
-            $this->csvExport(array('type' => 'pie', 'option' => Tools::getValue('id_order_state')));
+            $this->csvExport(['type' => 'pie', 'option' => Tools::getValue('id_order_state')]);
         }
         $this->html = '
 			<div class="panel-heading">
@@ -74,33 +74,33 @@ class statscarrier extends ModuleGraph
 				<div class="row">
 					<div class="col-lg-5 col-lg-offset-6">
 						<select name="id_order_state">
-							<option value="0"'.((!Tools::getValue('id_order_state')) ? ' selected="selected"' : '').'>'.$this->trans('All', array(), 'Admin.Global').'</option>';
+							<option value="0"'.((!Tools::getValue('id_order_state')) ? ' selected="selected"' : '').'>'.$this->trans('All', [], 'Admin.Global').'</option>';
         foreach ($states as $state) {
             $this->html .= '<option value="'.$state['id_order_state'].'"'.(($state['id_order_state'] == Tools::getValue('id_order_state')) ? ' selected="selected"' : '').'>'.$state['name'].'</option>';
         }
         $this->html .= '</select>
 					</div>
 					<div class="col-lg-1">
-						<input type="submit" name="submitState" value="'.$this->trans('Filter', array(), 'Admin.Global').'" class="btn btn-default pull-right" />
+						<input type="submit" name="submitState" value="'.$this->trans('Filter', [], 'Admin.Global').'" class="btn btn-default pull-right" />
 					</div>
 				</div>
 			</form>
 
 			<div class="alert alert-info">
-				'.$this->trans('This graph represents the carrier distribution for your orders. You can also narrow the focus of the graph to display distribution for a particular order status.', array(), 'Modules.Statscarrier.Admin').'
+				'.$this->trans('This graph represents the carrier distribution for your orders. You can also narrow the focus of the graph to display distribution for a particular order status.', [], 'Modules.Statscarrier.Admin').'
 			</div>
 			<div class="row row-margin-bottom">
 				<div class="col-lg-12">
 					<div class="col-lg-8">
-						'.($result['total'] ? $this->engine(array(
+						'.($result['total'] ? $this->engine([
                     'type' => 'pie',
                     'option' => Tools::getValue('id_order_state')
-                )).'
+                ]).'
 					</div>
 					<div class="col-lg-4">
 						<a href="'.Tools::safeOutput($_SERVER['REQUEST_URI'].'&export=1&exportType=language').'" class="btn btn-default">
-							<i class="icon-cloud-upload"></i> '.$this->trans('CSV Export', array(), 'Admin.Global').'
-						</a>' : $this->trans('No valid orders have been received for this period.', array(), 'Modules.Statscarrier.Admin')).'
+							<i class="icon-cloud-upload"></i> '.$this->trans('CSV Export', [], 'Admin.Global').'
+						</a>' : $this->trans('No valid orders have been received for this period.', [], 'Modules.Statscarrier.Admin')).'
 					</div>
 				</div>
 			</div>';
@@ -123,7 +123,7 @@ class statscarrier extends ModuleGraph
 				ORDER BY oh.date_add DESC, oh.id_order_history DESC
 				LIMIT 1) = '.(int)$this->option;
         }
-        $this->_titles['main'] = $this->trans('Percentage of orders listed by carrier.', array(), 'Modules.Statscarrier.Admin');
+        $this->_titles['main'] = $this->trans('Percentage of orders listed by carrier.', [], 'Modules.Statscarrier.Admin');
 
         $sql = 'SELECT c.name, COUNT(DISTINCT o.`id_order`) as total
 				FROM `'._DB_PREFIX_.'carrier` c
