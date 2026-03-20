@@ -50,11 +50,25 @@ class statscarrier extends ModuleGraph
         $this->ps_versions_compliancy = ['min' => '1.7.1.0', 'max' => _PS_VERSION_];
     }
 
+    /**
+     * Install the module and register the stats dashboard hook.
+     *
+     * @return bool True on successful installation, false otherwise
+     */
     public function install()
     {
         return (parent::install() && $this->registerHook('displayAdminStatsModules'));
     }
 
+    /**
+     * Render the carrier usage chart on the admin statistics dashboard.
+     *
+     * Presents carrier distribution as a pie/bar chart. Supports CSV export.
+     *
+     * @param array $params Hook parameters passed by PrestaShop (unused)
+     *
+     * @return string HTML output for the statistics widget
+     */
     public function hookDisplayAdminStatsModules($params)
     {
         $sql = 'SELECT COUNT(o.`id_order`) as total
